@@ -131,7 +131,13 @@ const MyComponent: React.FC = () => {
       </div>
       <div className="w-full bg-white bg-opacity-10 min-h-[1px]" />
       <footer className="flex gap-3 p-3 w-full font-semibold text-center  text-white whitespace-nowrap bg-zinc-800">
-        <button className="flex flex-1 justify-center items-center px-4 py-3 bg-sky-500 rounded">
+        <button
+          onClick={() => {
+            // send message to figma
+            parent.postMessage({ pluginMessage: "replace" }, "*");
+          }}
+          className="flex flex-1 justify-center items-center px-4 py-3 bg-sky-500 rounded"
+        >
           <div className="flex gap-1.5">
             <span className="tracking-normal leading-4">Replace</span>
             <span className="justify-center px-1 py-1 my-auto text-[0.8180636777128005em]  tracking-wide leading-3 bg-white bg-opacity-30 rounded-[139.925px]">

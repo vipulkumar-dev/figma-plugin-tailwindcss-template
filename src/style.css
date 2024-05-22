@@ -6,13 +6,13 @@
 @layer base {
   :root {
     --background: 0 0% 17%;
-    --foreground: 222.2 84% 4.9%;
+    --foreground: 0 0% 100%;
 
     --card: 0 0% 17%;
-    --card-foreground: 222.2 84% 4.9%;
+    --card-foreground: 0 0% 100%;
 
     --popover: 0 0% 17%;
-    --popover-foreground: 222.2 84% 4.9%;
+    --popover-foreground: 0 0% 100%;
 
     --primary: 204 97% 54%;
     --primary-foreground: 210 40% 98%;
@@ -23,15 +23,15 @@
     --muted: 210 40% 96.1%;
     --muted-foreground: 215.4 16.3% 46.9%;
 
-    --accent: 210 40% 96.1%;
+    --accent: 0, 0%, 100%;
     --accent-foreground: 204 97% 54%;
 
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 210 40% 98%;
 
     --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 222.2 84% 4.9%;
+    --input: 0 0% 100%;
+    --ring: 0 0% 100%;
 
     --radius: 0.5rem;
   }
@@ -69,7 +69,7 @@
 
 @layer base {
   .color {
-    color: hsl(0, 0%, 17%);
+    color: hsla(0, 0%, 17%, 0.143);
   }
   * {
     @apply border-border;

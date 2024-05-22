@@ -42,10 +42,10 @@ const UI = () => {
           </SelectGroup>
         </SelectContent>
       </Select> */}
-      <div className="absolute">
-        <ComboboxDemo></ComboboxDemo>
-      </div>
-      {/* <MyComponent></MyComponent> */}
+
+      <ComboboxDemo></ComboboxDemo>
+
+      <MyComponent></MyComponent>
     </>
   );
 };

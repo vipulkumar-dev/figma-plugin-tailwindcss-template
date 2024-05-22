@@ -67,14 +67,13 @@ export function ComboboxDemo() {
   );
 
   return (
-    <div className="flex items-center space-x-4">
-      <p className="text-sm text-muted-foreground">Status</p>
+    <div className="flex items-center space-x-2 text-foreground">
       <Popover open={open} onOpenChange={setOpen}>
         <PopoverTrigger asChild>
           <Button
             variant="outline"
             size="sm"
-            className="w-[150px] justify-start"
+            className="justify-between border-input/10 font-normal flex grow gap-0  pr-3 pl-4 w-auto rounded border border-solid bg-[#ffffff0a]  border-white border-opacity-10 text-white text-opacity-60"
           >
             {selectedStatus ? (
               <>
@@ -82,11 +81,19 @@ export function ComboboxDemo() {
                 {selectedStatus.label}
               </>
             ) : (
-              <>+ Set status</>
+              <>
+                <div>Select Font</div>
+                <img
+                  loading="lazy"
+                  src="https://cdn.builder.io/api/v1/image/assets/TEMP/69378805b528a730b4a6ec3d7c57ae0eedf72120197c9f2c35c94eae57ef34d8?apiKey=40dc68eb1cfd47748774463cbd8a70f3&"
+                  alt=""
+                  className="shrink-0  w-[0.7147498375568551em]"
+                />
+              </>
             )}
           </Button>
         </PopoverTrigger>
-        <PopoverContent className="p-0" side="right" align="start">
+        <PopoverContent className="p-0" side="bottom" align="center">
           <Command>
             <CommandInput placeholder="Change status..." />
             <CommandList>
