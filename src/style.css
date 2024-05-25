@@ -11,7 +11,7 @@
     --card: 0 0% 17%;
     --card-foreground: 0 0% 100%;
 
-    --popover: 0 0% 17%;
+    --popover: 240 4% 16%;
     --popover-foreground: 0 0% 100%;
 
     --primary: 204 97% 54%;
@@ -21,10 +21,10 @@
     --secondary-foreground: 204 97% 54%;
 
     --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
+    --muted-foreground: 240 0% 60%;
 
-    --accent: 0, 0%, 100%;
-    --accent-foreground: 204 97% 54%;
+    --accent: 0 0% 20%;
+    --accent-foreground: 0 0% 100%;
 
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 210 40% 98%;
@@ -69,11 +69,12 @@
 
 @layer base {
   .color {
-    color: hsla(0, 0%, 17%, 0.143);
+    color: hsl(0, 0%, 20%);
   }
   * {
-    @apply border-border;
+    border-color: hsla(0, 0%, 100%, 0.08);
   }
+
   body {
     @apply bg-background text-foreground;
     font-family: "Inter", sans-serif;
@@ -83,15 +84,15 @@
   }
 }
 
-.custom_scrollbar::-webkit-scrollbar {
+*::-webkit-scrollbar {
   width: 0.3em;
 }
 
-.custom_scrollbar::-webkit-scrollbar-track {
+*::-webkit-scrollbar-track {
   box-shadow: inset 0 0 6px rgba(0, 0, 0, 0);
 }
 
-.custom_scrollbar::-webkit-scrollbar-thumb {
+*::-webkit-scrollbar-thumb {
   background-color: hsla(0, 0%, 100%, 0.1);
   border-radius: 1em;
 }

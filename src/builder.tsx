@@ -1,3 +1,4 @@
+import { ComboboxDemo } from "../components/ui/comboBox";
 import { Checkbox } from "../components/ui/checkbox";
 import * as React from "react";
 
@@ -55,7 +56,7 @@ const FontSelector: React.FC<FontSelectorProps> = ({
               <div className=" justify-center py-[0.7270955165692008em] px-[1.0909681611435997em] text-white whitespace-nowrap rounded-sm border border-solid  border-white border-opacity-10 w-[115px]">
                 {style.label}
               </div>
-              <div className="flex grow gap-0  pr-3 pl-4 w-auto rounded border border-solid bg-[#ffffff0a]  border-white border-opacity-10 text-white text-opacity-60">
+              {/* <div className="flex grow gap-0  pr-3 pl-4 w-auto rounded border border-solid bg-[#ffffff0a]  border-white border-opacity-10 text-white text-opacity-60">
                 <div className="flex-1 my-auto py-[0.7270955165692008em] ">
                   {style.value}
                 </div>
@@ -65,7 +66,8 @@ const FontSelector: React.FC<FontSelectorProps> = ({
                   alt=""
                   className="shrink-0  w-[0.7147498375568551em]"
                 />
-              </div>
+              </div> */}
+              <ComboboxDemo></ComboboxDemo>
             </div>
           )
       )}
@@ -126,7 +128,7 @@ const MyComponent: React.FC = () => {
         </section>
       </main>
       <div className="flex gap-[0.8em] my-[1em] items-center  px-[1.299545159194282em] mt-auto  tracking-normal leading-4 text-white text-opacity-80">
-        <Checkbox className="w-[1.2em] aspect-square" />
+        <Checkbox checked className="w-[1.2em] aspect-square" />
         <div className="flex-1 my-auto">Replace on Text Styles</div>
       </div>
       <div className="w-full bg-white bg-opacity-10 min-h-[1px]" />

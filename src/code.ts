@@ -77,10 +77,15 @@ selectedNodes.forEach((node) => {
   allTextNodes = allTextNodes.concat(getSelectedTextNodes(node));
 });
 
+const loadPlugin = async () => {
+  const allFonts = await loadAllUserFonts();
+  figma.ui.postMessage(allFonts);
+};
+
+loadPlugin();
+
 // Main function to run the plugin
 async function runPlugin() {
-  // const allFonts = await loadAllUserFonts();
-
   // const userFontChoice = userPicksFont(allFonts);
   // const matchingTextLayers = findTextLayersWithFont(userFontChoice);
 

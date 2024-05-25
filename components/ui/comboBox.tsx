@@ -25,6 +25,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "../../components/ui/popover";
+import { useRef } from "react";
 
 type Status = {
   value: string;
@@ -60,73 +61,80 @@ const statuses: Status[] = [
   },
 ];
 
+type allfonts = {
+  fontName: {
+    family: string;
+    style: string;
+  };
+};
+
 export function ComboboxDemo() {
   const [open, setOpen] = React.useState(false);
-  const [selectedStatus, setSelectedStatus] = React.useState<Status | null>(
+  const [selectedStatus, setSelectedStatus] = React.useState<String | null>(
     null
   );
 
+  const allfonts = useRef<allfonts[]>([]);
+
+  React.useEffect(() => {
+    onmessage = (event) => {
+      allfonts.current = event.data.pluginMessage;
+    };
+  }, []);
+
+  console.log(allfonts.current);
+
   return (
-    <div className="flex items-center space-x-2 text-foreground">
-      <Popover open={open} onOpenChange={setOpen}>
-        <PopoverTrigger asChild>
-          <Button
-            variant="outline"
-            size="sm"
-            className="justify-between border-input/10 font-normal flex grow gap-0  pr-3 pl-4 w-auto rounded border border-solid bg-[#ffffff0a]  border-white border-opacity-10 text-white text-opacity-60"
+    <Popover open={open} onOpenChange={setOpen}>
+      <PopoverTrigger asChild>
+        <Button
+          variant="outline"
+          className="justify-between border-input/10 font-normal  flex grow gap-0 py-[0.7270955165692008em] px-[1.0909681611435997em] w-auto rounded border border-solid bg-[#ffffff0a]  border-white border-opacity-10 text-white text-opacity-60"
+        >
+          {selectedStatus ? (
+            <div className="text-white">{selectedStatus}</div>
+          ) : (
+            <div>Select Font</div>
+          )}
+          <svg
+            viewBox="0 0 11 10"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+            className="shrink-0  w-[0.7147498375568551em]"
           >
-            {selectedStatus ? (
-              <>
-                <selectedStatus.icon className="mr-2 h-4 w-4 shrink-0" />
-                {selectedStatus.label}
-              </>
-            ) : (
-              <>
-                <div>Select Font</div>
-                <img
-                  loading="lazy"
-                  src="https://cdn.builder.io/api/v1/image/assets/TEMP/69378805b528a730b4a6ec3d7c57ae0eedf72120197c9f2c35c94eae57ef34d8?apiKey=40dc68eb1cfd47748774463cbd8a70f3&"
-                  alt=""
-                  className="shrink-0  w-[0.7147498375568551em]"
-                />
-              </>
-            )}
-          </Button>
-        </PopoverTrigger>
-        <PopoverContent className="p-0" side="bottom" align="center">
-          <Command>
-            <CommandInput placeholder="Change status..." />
-            <CommandList>
-              <CommandEmpty>No results found.</CommandEmpty>
-              <CommandGroup>
-                {statuses.map((status) => (
-                  <CommandItem
-                    key={status.value}
-                    value={status.value}
-                    onSelect={(value) => {
-                      setSelectedStatus(
-                        statuses.find((priority) => priority.value === value) ||
-                          null
-                      );
-                      setOpen(false);
-                    }}
-                  >
-                    <status.icon
-                      className={cn(
-                        "mr-2 h-4 w-4",
-                        status.value === selectedStatus?.value
-                          ? "opacity-100"
-                          : "opacity-40"
-                      )}
-                    />
-                    <span>{status.label}</span>
-                  </CommandItem>
-                ))}
-              </CommandGroup>
-            </CommandList>
-          </Command>
-        </PopoverContent>
-      </Popover>
-    </div>
+            <path
+              fill-rule="evenodd"
+              clip-rule="evenodd"
+              d="M0.989422 2L1.48413 2.49471L5.18718 6.19776L8.89023 2.49471L9.38494 2L10.3744 2.98942L9.87965 3.48413L5.68189 7.68189L5.18718 8.1766L4.69247 7.68189L0.494711 3.48413L0 2.98942L0.989422 2Z"
+              fill="white"
+              fill-opacity="0.5"
+            />
+          </svg>
+        </Button>
+      </PopoverTrigger>
+      <PopoverContent className="p-0" side="bottom" align="end">
+        <Command>
+          <CommandInput placeholder="Change status..." />
+          <CommandList>
+            <CommandEmpty>No results found.</CommandEmpty>
+            <CommandGroup>
+              {allfonts.current?.map((font, index) => (
+                <CommandItem
+                  key={index}
+                  onSelect={(value) => {
+                    setSelectedStatus(value);
+                    setOpen(false);
+                  }}
+                >
+                  <span>
+                    {`${font.fontName.family} - ${font.fontName.style}`}
+                  </span>
+                </CommandItem>
+              ))}
+            </CommandGroup>
+          </CommandList>
+        </Command>
+      </PopoverContent>
+    </Popover>
   );
 }
