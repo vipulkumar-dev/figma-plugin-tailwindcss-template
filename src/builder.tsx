@@ -1,6 +1,8 @@
 import { ComboboxDemo } from "../components/ui/comboBox";
 import { Checkbox } from "../components/ui/checkbox";
 import * as React from "react";
+import { useContext, useEffect, useRef, useState } from "react";
+import { FontContext } from "./ui";
 
 interface FontSelectorProps {
   fontName: string;
@@ -35,6 +37,8 @@ const FontSelector: React.FC<FontSelectorProps> = ({
     { fontName: "Lato", fontWeights: ["Regular", "Bold"] },
   ];
 
+  const allFonts = useContext(FontContext);
+
   return (
     <div>
       <div className="flex gap-2.5 justify-between px-px mt-0 mr-5 ml-6  tracking-normal leading-4 whitespace-nowrap text-white text-opacity-75">
@@ -67,7 +71,10 @@ const FontSelector: React.FC<FontSelectorProps> = ({
                   className="shrink-0  w-[0.7147498375568551em]"
                 />
               </div> */}
-              <ComboboxDemo></ComboboxDemo>
+              <ComboboxDemo
+                key={style.label}
+                allfonts={allFonts}
+              ></ComboboxDemo>
             </div>
           )
       )}

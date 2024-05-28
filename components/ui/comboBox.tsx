@@ -61,28 +61,23 @@ const statuses: Status[] = [
   },
 ];
 
-type allfonts = {
+type allfontsT = {
   fontName: {
     family: string;
     style: string;
   };
 };
 
-export function ComboboxDemo() {
+export function ComboboxDemo(allfonts) {
   const [open, setOpen] = React.useState(false);
   const [selectedStatus, setSelectedStatus] = React.useState<String | null>(
     null
   );
 
-  const allfonts = useRef<allfonts[]>([]);
-
-  React.useEffect(() => {
-    onmessage = (event) => {
-      allfonts.current = event.data.pluginMessage;
-    };
-  }, []);
-
-  console.log(allfonts.current);
+  console.log(allfonts, "Render");
+  if (allfonts.length === 0) {
+    return;
+  }
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
@@ -103,22 +98,22 @@ export function ComboboxDemo() {
             className="shrink-0  w-[0.7147498375568551em]"
           >
             <path
-              fill-rule="evenodd"
-              clip-rule="evenodd"
+              fillRule="evenodd"
+              clipRule="evenodd"
               d="M0.989422 2L1.48413 2.49471L5.18718 6.19776L8.89023 2.49471L9.38494 2L10.3744 2.98942L9.87965 3.48413L5.68189 7.68189L5.18718 8.1766L4.69247 7.68189L0.494711 3.48413L0 2.98942L0.989422 2Z"
               fill="white"
-              fill-opacity="0.5"
+              fillOpacity="0.5"
             />
           </svg>
         </Button>
       </PopoverTrigger>
       <PopoverContent className="p-0" side="bottom" align="end">
         <Command>
-          <CommandInput placeholder="Change status..." />
+          <CommandInput placeholder="Search Font..." />
           <CommandList>
             <CommandEmpty>No results found.</CommandEmpty>
             <CommandGroup>
-              {allfonts.current?.map((font, index) => (
+              {allfonts.allfonts?.map((font, index) => (
                 <CommandItem
                   key={index}
                   onSelect={(value) => {

@@ -1,33 +1,32 @@
-import { useState } from "react";
+import { createContext, useState } from "react";
 import ReactDOM from "react-dom/client";
 import "./style.css";
-import * as bricksLogo from "../assets/bricks-logo.png";
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectLabel,
-  SelectTrigger,
-  SelectValue,
-} from "../components/ui/select";
 
 import MyComponent from "./builder";
-import { ComboboxDemo } from "../components/ui/comboBox";
+
+export const FontContext = createContext(null);
 
 const UI = () => {
   const [isComponentSelected, setIsComponentSelected] = useState(false);
+  const [allFonts, setAllFonts] = useState<allfontsT[]>(null);
 
-  onmessage = async (event: MessageEvent) => {
-    const pluginMessage = event.data.pluginMessage;
-    if (pluginMessage.type === "selection-change") {
-      setIsComponentSelected(pluginMessage.isComponentSelected);
-    }
+  type allfontsT = {
+    fontName: {
+      family: string;
+      style: string;
+    };
+  };
+
+  onmessage = async (event) => {
+    setAllFonts(event.data.pluginMessage);
+    console.log(event.data.pluginMessage);
   };
 
   return (
     <>
-      <MyComponent></MyComponent>
+      <FontContext.Provider value={allFonts}>
+        <MyComponent></MyComponent>
+      </FontContext.Provider>
     </>
   );
 };
