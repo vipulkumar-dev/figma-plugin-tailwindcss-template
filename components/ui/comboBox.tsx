@@ -25,59 +25,23 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "../../components/ui/popover";
-import { useRef } from "react";
+import { useContext } from "react";
+import { FontContext } from "../../src/ui";
 
-type Status = {
-  value: string;
-  label: string;
-  icon: LucideIcon;
-};
-
-const statuses: Status[] = [
-  {
-    value: "backlog",
-    label: "Backlog",
-    icon: HelpCircle,
-  },
-  {
-    value: "todo",
-    label: "Todo",
-    icon: Circle,
-  },
-  {
-    value: "in progress",
-    label: "In Progress",
-    icon: ArrowUpCircle,
-  },
-  {
-    value: "done",
-    label: "Done",
-    icon: CheckCircle2,
-  },
-  {
-    value: "canceled",
-    label: "Canceled",
-    icon: XCircle,
-  },
-];
-
-type allfontsT = {
+type allFontsT = {
   fontName: {
     family: string;
     style: string;
   };
 };
 
-export function ComboboxDemo(allfonts) {
+export function ComboboxDemo({ currentFont }: { currentFont?: string }) {
   const [open, setOpen] = React.useState(false);
   const [selectedStatus, setSelectedStatus] = React.useState<String | null>(
     null
   );
 
-  console.log(allfonts, "Render");
-  if (allfonts.length === 0) {
-    return;
-  }
+  const allFonts = useContext(FontContext);
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
@@ -113,11 +77,23 @@ export function ComboboxDemo(allfonts) {
           <CommandList>
             <CommandEmpty>No results found.</CommandEmpty>
             <CommandGroup>
-              {allfonts.allfonts?.map((font, index) => (
+              {allFonts?.map((font, index) => (
                 <CommandItem
                   key={index}
                   onSelect={(value) => {
                     setSelectedStatus(value);
+                    parent.postMessage(
+                      {
+                        pluginMessage: {
+                          type: "selectFont",
+                          data: {
+                            currentFont: currentFont,
+                            targetFont: value,
+                          },
+                        },
+                      },
+                      "*"
+                    );
                     setOpen(false);
                   }}
                 >

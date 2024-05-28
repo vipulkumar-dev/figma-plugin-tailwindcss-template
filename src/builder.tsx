@@ -1,44 +1,16 @@
 import { ComboboxDemo } from "../components/ui/comboBox";
 import { Checkbox } from "../components/ui/checkbox";
 import * as React from "react";
-import { useContext, useEffect, useRef, useState } from "react";
-import { FontContext } from "./ui";
 
 interface FontSelectorProps {
   fontName: string;
-  regularFont: string;
-  boldFont?: string;
-  semiBoldFont?: string;
-  italicFont?: string;
-  lightFont?: string;
+  fontWeights: string[];
 }
 
 const FontSelector: React.FC<FontSelectorProps> = ({
   fontName,
-  regularFont,
-  boldFont,
-  semiBoldFont,
-  italicFont,
-  lightFont,
+  fontWeights,
 }) => {
-  const fontStyles = [
-    { label: "Regular", value: regularFont },
-    { label: "Bold", value: boldFont },
-    { label: "Semi Bold", value: semiBoldFont },
-    { label: "Italic", value: italicFont },
-    { label: "Light", value: lightFont },
-  ];
-
-  const fonts = [
-    {
-      fontName: "Inter",
-      fontWeights: ["Regular", "Bold", "Semi Bold", "Italic"],
-    },
-    { fontName: "Lato", fontWeights: ["Regular", "Bold"] },
-  ];
-
-  const allFonts = useContext(FontContext);
-
   return (
     <div>
       <div className="flex gap-2.5 justify-between px-px mt-0 mr-5 ml-6  tracking-normal leading-4 whitespace-nowrap text-white text-opacity-75">
@@ -50,17 +22,15 @@ const FontSelector: React.FC<FontSelectorProps> = ({
           className="shrink-0 aspect-square w-[2.014294996751137em]"
         />
       </div>
-      {fontStyles.map(
-        (style) =>
-          style.value && (
-            <div
-              key={style.label}
-              className="flex gap-3 mt-[0.8180636777128005em] mx-[1.299545159194282em]   tracking-normal leading-5"
-            >
-              <div className=" justify-center py-[0.7270955165692008em] px-[1.0909681611435997em] text-white whitespace-nowrap rounded-sm border border-solid  border-white border-opacity-10 w-[115px]">
-                {style.label}
-              </div>
-              {/* <div className="flex grow gap-0  pr-3 pl-4 w-auto rounded border border-solid bg-[#ffffff0a]  border-white border-opacity-10 text-white text-opacity-60">
+      {fontWeights?.map((weight) => (
+        <div
+          key={weight}
+          className="flex gap-3 mt-[0.8180636777128005em] mx-[1.299545159194282em]   tracking-normal leading-5"
+        >
+          <div className=" justify-center py-[0.7270955165692008em] px-[1.0909681611435997em] text-white whitespace-nowrap rounded-sm border border-solid  border-white border-opacity-10 w-[115px]">
+            {weight}
+          </div>
+          {/* <div className="flex grow gap-0  pr-3 pl-4 w-auto rounded border border-solid bg-[#ffffff0a]  border-white border-opacity-10 text-white text-opacity-60">
                 <div className="flex-1 my-auto py-[0.7270955165692008em] ">
                   {style.value}
                 </div>
@@ -71,13 +41,12 @@ const FontSelector: React.FC<FontSelectorProps> = ({
                   className="shrink-0  w-[0.7147498375568551em]"
                 />
               </div> */}
-              <ComboboxDemo
-                key={style.label}
-                allfonts={allFonts}
-              ></ComboboxDemo>
-            </div>
-          )
-      )}
+          <ComboboxDemo
+            key={fontName + " - " + weight}
+            currentFont={fontName + " - " + weight}
+          ></ComboboxDemo>
+        </div>
+      ))}
     </div>
   );
 };
@@ -121,16 +90,11 @@ const MyComponent: React.FC = () => {
           </div> */}
           <FontSelector
             fontName="Inter"
-            regularFont="Inter - Regular"
-            boldFont="Select Font"
-            semiBoldFont="Select Font"
-            italicFont="Select Font"
+            fontWeights={["Regular", "Bold", "Semi Bold", "Italic"]}
           />
           <FontSelector
             fontName="Lato"
-            regularFont="Select Font"
-            boldFont="Select Font"
-            lightFont="Select Font"
+            fontWeights={["Regular", "Bold", "Semi Bold"]}
           />
         </section>
       </main>

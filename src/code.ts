@@ -100,4 +100,9 @@ figma.ui.onmessage = (message) => {
   if (message.type == "replace") {
     runPlugin();
   }
+  if (message.type == "selectFont") {
+    console.log(message.data);
+    fontMapping[message.data.currentFont] = message.data.targetFont;
+    console.log(fontMapping);
+  }
 };

@@ -19,7 +19,6 @@ const UI = () => {
 
   onmessage = async (event) => {
     setAllFonts(event.data.pluginMessage);
-    console.log(event.data.pluginMessage);
   };
 
   return (
