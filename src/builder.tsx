@@ -143,7 +143,7 @@ const MyComponent: React.FC = () => {
         <button
           onClick={() => {
             // send message to figma
-            parent.postMessage({ pluginMessage: "replace" }, "*");
+            parent.postMessage({ pluginMessage: { type: "replace" } }, "*");
           }}
           className="flex flex-1 justify-center items-center px-4 py-3 bg-sky-500 rounded"
         >

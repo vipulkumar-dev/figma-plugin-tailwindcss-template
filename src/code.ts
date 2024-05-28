@@ -1,12 +1,12 @@
 figma.showUI(__html__, { height: 620, width: 350 });
 
-figma.on("selectionchange", async () => {
-  figma.ui.postMessage({
-    type: "selection-change",
-    isComponentSelected: figma.currentPage.selection.length > 0,
-    selectedComponents: figma.currentPage.selection.map((x) => x.name),
-  });
-});
+// figma.on("selectionchange", async () => {
+//   figma.ui.postMessage({
+//     type: "selection-change",
+//     isComponentSelected: figma.currentPage.selection.length > 0,
+//     selectedComponents: figma.currentPage.selection.map((x) => x.name),
+//   });
+// });
 
 let fontMapping = {
   MontserratBlack: { family: "Satoshi", style: "Regular" },
@@ -78,8 +78,8 @@ selectedNodes.forEach((node) => {
 });
 
 const loadPlugin = async () => {
-  const allFonts = await loadAllUserFonts();
-  figma.ui.postMessage(allFonts);
+  const Fonts = await loadAllUserFonts();
+  figma.ui.postMessage(Fonts);
 };
 
 loadPlugin();
@@ -97,7 +97,7 @@ async function runPlugin() {
 }
 
 figma.ui.onmessage = (message) => {
-  if (message == "replace") {
+  if (message.type == "replace") {
     runPlugin();
   }
 };
