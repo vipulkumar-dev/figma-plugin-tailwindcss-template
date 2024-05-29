@@ -51,7 +51,9 @@ export function ComboboxDemo({ currentFont }: { currentFont?: string }) {
           className="justify-between border-input/10 font-normal  flex grow gap-0 py-[0.7270955165692008em] px-[1.0909681611435997em] w-auto rounded border border-solid bg-[#ffffff0a]  border-white border-opacity-10 text-white text-opacity-60"
         >
           {selectedStatus ? (
-            <div className="text-white">{selectedStatus}</div>
+            <div className="text-white truncate max-w-[125px]">
+              {selectedStatus}
+            </div>
           ) : (
             <div>Select Font</div>
           )}
