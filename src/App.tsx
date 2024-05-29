@@ -1,6 +1,8 @@
 import { ComboboxDemo } from "../components/ui/comboBox";
 import { Checkbox } from "../components/ui/checkbox";
 import * as React from "react";
+import { useContext } from "react";
+import { SelectedFonts } from "../src/ui";
 
 interface FontSelectorProps {
   fontName: string;
@@ -52,19 +54,14 @@ const FontSelector: React.FC<FontSelectorProps> = ({
 };
 
 const App: React.FC = () => {
-  const UserFonts = [
-    {
-      fontName: "Inter",
-      fontWeights: ["Regular", "Bold", "Semi Bold", "Italic"],
-    },
-    { fontName: "Lato", fontWeights: ["Regular", "Bold", "Semi Bold"] },
-  ];
+  const selectedFonts = useContext(SelectedFonts);
+  console.log(selectedFonts);
 
   return (
     <div className="flex flex-col pt-[0.8180636777128005em] text-[13.39px] h-screen bg-[#2C2C2C]  max-w-[375px]">
       <main className="flex pt-[0.8180636777128005em] flex-col justify-start w-full h-full overflow-auto custom_scrollbar">
         <section className="flex flex-col gap-[2.4541910331384016em]">
-          {UserFonts.map((style) => (
+          {selectedFonts?.map((style) => (
             <FontSelector
               key={style.fontName}
               fontName={style.fontName}

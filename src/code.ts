@@ -1,22 +1,23 @@
 figma.showUI(__html__, { height: 620, width: 350 });
 
-// figma.on("selectionchange", async () => {
-//   figma.ui.postMessage({
-//     type: "selection-change",
-//     isComponentSelected: figma.currentPage.selection.length > 0,
-//     selectedComponents: figma.currentPage.selection.map((x) => x.name),
-//   });
-// });
+let fontMapping = {};
 
-let fontMapping = {
-  MontserratBlack: { family: "Satoshi", style: "Regular" },
-  MontserratExtraBold: { family: "Satoshi", style: "Bold" },
-};
+// figma.on("selectionchange", async () => {
+//   // figma.ui.postMessage({
+//   //   type: "selection-change",
+//   //   isComponentSelected: figma.currentPage.selection.length > 0,
+//   //   selectedComponents: figma.currentPage.selection.map((x) => x.name),
+//   // });
+
+//   updateMappingObject(selectedTextNodes);
+//   console.log(fontMapping);
+// });
 
 // This function will get all selected text layers' fonts from the active page
 function updateMappingObject(textLayers) {
+  fontMapping = {};
   textLayers.forEach((textNode) => {
-    const key = textNode.fontName.family + textNode.fontName.style;
+    const key = textNode.fontName.family + " - " + textNode.fontName.style;
     if (!fontMapping.hasOwnProperty(key)) {
       fontMapping[key] = null;
     }
@@ -24,29 +25,7 @@ function updateMappingObject(textLayers) {
 }
 
 // This function will load all fonts available to the user in Figma
-async function loadAllUserFonts() {
-  const allFonts = await figma.listAvailableFontsAsync();
-  return allFonts;
-}
 
-// This function allows the user to pick a font and its weight
-function userPicksFont(allFonts) {
-  // Implement UI for user to pick a font and weight
-  // Return the user's choice
-}
-
-// // This function finds all text layers that have the specified font
-// function findTextLayersWithFont(fontName) {
-//   const allTextLayers = figma.currentPage.findAll(
-//     (node) => node.type === "TEXT"
-//   );
-//   // const matchingTextLayers = allTextLayers.filter(
-//   //   (textNode) => textNode.fontName.family === fontName.family
-//   // );
-//   // return matchingTextLayers;
-// }
-
-// This function replaces the font in all matching text layers with the new user-picked font
 async function replaceFontInTextLayers(textLayers) {
   textLayers.forEach(async (textNode) => {
     const newFont =
@@ -71,34 +50,66 @@ function getSelectedTextNodes(node) {
 }
 
 const selectedNodes = figma.currentPage.selection;
-let allTextNodes: TextNode[] = [];
+let selectedTextNodes: TextNode[] = [];
 
 selectedNodes.forEach((node) => {
-  allTextNodes = allTextNodes.concat(getSelectedTextNodes(node));
+  selectedTextNodes = selectedTextNodes.concat(getSelectedTextNodes(node));
 });
 
 const loadPlugin = async () => {
-  const Fonts = await loadAllUserFonts();
-  figma.ui.postMessage(Fonts);
+  const Fonts = await figma.listAvailableFontsAsync();
+  figma.ui.postMessage({ type: "allFonts", data: Fonts });
+  updateMappingObject(selectedTextNodes);
+  const convertedFonts = convertFontObjectToUserFonts(fontMapping);
+  figma.ui.postMessage({ type: "selectedFonts", data: convertedFonts });
 };
 
 loadPlugin();
 
 // Main function to run the plugin
-async function runPlugin() {
+async function Replace() {
   // const userFontChoice = userPicksFont(allFonts);
   // const matchingTextLayers = findTextLayersWithFont(userFontChoice);
 
   //if that layer has that font than we change it to that
-  await replaceFontInTextLayers(allTextNodes);
-  updateMappingObject(allTextNodes);
-  console.log(allTextNodes);
-  console.log(fontMapping);
+  // await replaceFontInTextLayers(selectedTextNodes);
+  updateMappingObject(selectedTextNodes);
+  const convertedFonts = convertFontObjectToUserFonts(fontMapping);
+  figma.ui.postMessage({ type: "selectedFonts", data: convertedFonts });
 }
+
+function convertFontObjectToUserFonts(fontObject) {
+  const userFontsObj = {};
+
+  for (const fontName in fontObject) {
+    const fontFamily = fontName.split(" - ")[0];
+    const fontWeight = fontName.split(" - ")[1];
+
+    if (!userFontsObj[fontFamily]) {
+      userFontsObj[fontFamily] = {
+        fontName: fontFamily,
+        fontWeights: [fontWeight],
+      };
+    } else {
+      userFontsObj[fontFamily].fontWeights.push(fontWeight);
+    }
+  }
+
+  const userFontsArray = [];
+
+  for (const fontName in userFontsObj) {
+    const { fontWeights } = userFontsObj[fontName];
+    userFontsArray.push({ fontName, fontWeights });
+  }
+
+  return userFontsArray;
+}
+
+// Example usage:
 
 figma.ui.onmessage = (message) => {
   if (message.type == "replace") {
-    runPlugin();
+    Replace();
   }
   if (message.type == "selectFont") {
     console.log(message.data);
