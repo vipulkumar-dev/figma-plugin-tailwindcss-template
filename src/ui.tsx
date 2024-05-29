@@ -2,7 +2,7 @@ import { createContext, useState } from "react";
 import ReactDOM from "react-dom/client";
 import "./style.css";
 
-import MyComponent from "./builder";
+import App from "./App";
 
 export const FontContext = createContext(null);
 
@@ -24,7 +24,7 @@ const UI = () => {
   return (
     <>
       <FontContext.Provider value={allFonts}>
-        <MyComponent></MyComponent>
+        <App />
       </FontContext.Provider>
     </>
   );
