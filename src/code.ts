@@ -18,12 +18,25 @@ async function Replace() {
   console.log("Font replaced successfully");
 }
 
+async function Reload() {
+  const allUserFonts = await figma.listAvailableFontsAsync();
+  figma.ui.postMessage({ type: "allUserFontsData", data: allUserFonts });
+  const selectedTextNodes = getAllSelectedTextNodes();
+  updateFontMapping(selectedTextNodes);
+  const selectionFonts = convertFontMappingToSelectionFormat(fontMapping);
+  figma.ui.postMessage({ type: "selectionFontsData", data: selectionFonts });
+}
+
 // Example usage:
 
 figma.ui.onmessage = (message) => {
   switch (message.type) {
     case "replace":
       Replace();
+
+      break;
+    case "reload":
+      Reload();
 
       break;
 
