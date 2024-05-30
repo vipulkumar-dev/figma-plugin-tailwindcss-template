@@ -1,4 +1,4 @@
-figma.showUI(__html__, { height: 620, width: 350 });
+figma.showUI(__html__, { height: 600, width: 350 });
 
 let fontMapping = {};
 
