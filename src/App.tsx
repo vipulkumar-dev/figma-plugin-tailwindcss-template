@@ -56,7 +56,7 @@ const App: React.FC = () => {
 
   return (
     <div className="flex flex-col pt-[0.6361273554256011em] text-[13.39px] h-screen bg-[#2C2C2C]  max-w-[375px]">
-      <main className="flex py-[1em] flex-col justify-start w-full h-full overflow-auto custom_scrollbar">
+      <main className="flex py-[1em]  flex-col justify-start w-full h-full overflow-auto custom_scrollbar">
         <section className="flex flex-col gap-[2.4541910331384016em]">
           {selectionFonts?.map((font) => (
             <FontGroup
@@ -67,9 +67,33 @@ const App: React.FC = () => {
           ))}
         </section>
       </main>
-      <div className="flex gap-[0.8em] my-[1em] items-center  px-[1.299545159194282em] mt-auto  tracking-normal leading-4 text-white text-opacity-80">
-        <Checkbox defaultChecked className="w-[1.2em] aspect-square" />
-        <div className="flex-1 my-auto">Replace on Text Styles</div>
+      <div className="flex gap-[0.6em]  items-center  p-[1.299545159194282em] mt-auto  tracking-normal leading-4 text-white text-opacity-80">
+        {/* <Checkbox defaultChecked className="w-[1.2em] aspect-square" /> */}
+        <svg
+          viewBox="0 0 24 24"
+          className="w-[1.2em] aspect-square"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <circle cx="12" cy="12" r="10" stroke="white" stroke-width="1.5" />
+          <path
+            d="M12 17V11"
+            stroke="white"
+            stroke-width="1.5"
+            stroke-linecap="round"
+          />
+          <circle
+            cx="1"
+            cy="1"
+            r="1"
+            transform="matrix(1 0 0 -1 11 9)"
+            fill="white"
+          />
+        </svg>
+
+        <div className="flex-1 my-auto">
+          Select Layers, then reload to load fonts.
+        </div>
       </div>
       <div className="w-full bg-white bg-opacity-10 min-h-[1px]" />
       <footer className="flex gap-3 p-3 w-full font-semibold text-center  text-white whitespace-nowrap bg-zinc-800">
@@ -82,7 +106,7 @@ const App: React.FC = () => {
           <div className="flex gap-1.5">
             <span className="tracking-normal leading-4">Replace</span>
             <span className="justify-center px-1 py-1 my-auto text-[0.8180636777128005em]  tracking-wide leading-3 bg-white bg-opacity-30 rounded-[139.925px]">
-              10
+              0
             </span>
           </div>
         </button>

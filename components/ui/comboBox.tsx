@@ -101,6 +101,26 @@ export function Combobox({ currentFont }: { currentFont?: string }) {
             <CommandList>
               <CommandEmpty>No results found.</CommandEmpty>
               <CommandGroup>
+                <CommandItem
+                  onSelect={(targetFont) => {
+                    setSelectedStatus(null);
+                    parent.postMessage(
+                      {
+                        pluginMessage: {
+                          type: "selectFont",
+                          data: {
+                            currentFont,
+                            targetFont,
+                          },
+                        },
+                      },
+                      "*"
+                    );
+                    setOpen(false);
+                  }}
+                >
+                  <span>{`Select none`}</span>
+                </CommandItem>
                 {all50UserFonts?.map((font, index) => (
                   <CommandItem
                     key={index}

@@ -73,6 +73,7 @@ async function replaceFontInTextNodes(textNodes) {
 function updateFontMapping(textNodes) {
   fontMapping = {};
   textNodes.forEach((textNode) => {
+    if (!textNode.fontName.family || !textNode.fontName.style) return;
     const key = textNode.fontName.family + " - " + textNode.fontName.style;
     if (!fontMapping.hasOwnProperty(key)) {
       fontMapping[key] = null;
