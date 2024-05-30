@@ -1,22 +1,19 @@
-import { ComboboxDemo } from "../components/ui/comboBox";
-import { Checkbox } from "../components/ui/checkbox";
 import * as React from "react";
 import { useContext } from "react";
-import { SelectedFonts } from "../src/ui";
+import { Combobox } from "../components/ui/comboBox";
+import { Checkbox } from "../components/ui/checkbox";
+import { SelectionFonts } from "../src/ui";
 
-interface FontSelectorProps {
-  fontName: string;
-  fontWeights: string[];
+interface FontGroupProps {
+  fontFamily: string;
+  fontStyles: string[];
 }
 
-const FontSelector: React.FC<FontSelectorProps> = ({
-  fontName,
-  fontWeights,
-}) => {
+const FontGroup = ({ fontFamily, fontStyles }: FontGroupProps) => {
   return (
     <div>
       <div className="flex gap-2.5 justify-between px-px mt-0 mr-5 ml-6  tracking-normal leading-4 whitespace-nowrap text-white text-opacity-75">
-        <div className="my-auto">{fontName}</div>
+        <div className="my-auto">{fontFamily}</div>
         <img
           loading="lazy"
           src="https://cdn.builder.io/api/v1/image/assets/TEMP/b1cd2252f081dc386f97e7f5ea59a97e0501d863054b38d1b4d9178f49672047?apiKey=40dc68eb1cfd47748774463cbd8a70f3&"
@@ -24,17 +21,17 @@ const FontSelector: React.FC<FontSelectorProps> = ({
           className="shrink-0 aspect-square w-[2.014294996751137em]"
         />
       </div>
-      {fontWeights?.map((weight) => (
+      {fontStyles?.map((fontStyle) => (
         <div
-          key={weight}
+          key={fontStyle}
           className="flex gap-3 mt-[0.8180636777128005em] mx-[1.299545159194282em]   tracking-normal leading-5"
         >
           <div className=" justify-center py-[0.7270955165692008em] px-[1.0909681611435997em] text-white whitespace-nowrap rounded-sm border border-solid  border-white border-opacity-10 w-[115px]">
-            {weight}
+            {fontStyle}
           </div>
           {/* <div className="flex grow gap-0  pr-3 pl-4 w-auto rounded border border-solid bg-[#ffffff0a]  border-white border-opacity-10 text-white text-opacity-60">
                 <div className="flex-1 my-auto py-[0.7270955165692008em] ">
-                  {style.value}
+                  {fontStyle.value}
                 </div>
                 <img
                   loading="lazy"
@@ -43,10 +40,10 @@ const FontSelector: React.FC<FontSelectorProps> = ({
                   className="shrink-0  w-[0.7147498375568551em]"
                 />
               </div> */}
-          <ComboboxDemo
-            key={fontName + " - " + weight}
-            currentFont={fontName + " - " + weight}
-          ></ComboboxDemo>
+          <Combobox
+            key={fontFamily + " - " + fontStyle}
+            currentFont={fontFamily + " - " + fontStyle}
+          ></Combobox>
         </div>
       ))}
     </div>
@@ -54,18 +51,18 @@ const FontSelector: React.FC<FontSelectorProps> = ({
 };
 
 const App: React.FC = () => {
-  const selectedFonts = useContext(SelectedFonts);
-  console.log(selectedFonts);
+  const selectionFonts = useContext(SelectionFonts);
+  console.log(selectionFonts);
 
   return (
     <div className="flex flex-col pt-[0.8180636777128005em] text-[13.39px] h-screen bg-[#2C2C2C]  max-w-[375px]">
       <main className="flex pt-[0.8180636777128005em] flex-col justify-start w-full h-full overflow-auto custom_scrollbar">
         <section className="flex flex-col gap-[2.4541910331384016em]">
-          {selectedFonts?.map((style) => (
-            <FontSelector
-              key={style.fontName}
-              fontName={style.fontName}
-              fontWeights={style.fontWeights}
+          {selectionFonts?.map((font) => (
+            <FontGroup
+              key={font.fontFamily}
+              fontFamily={font.fontFamily}
+              fontStyles={font.fontStyles}
             />
           ))}
         </section>

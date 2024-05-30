@@ -1,16 +1,6 @@
 "use client";
 
 import * as React from "react";
-import {
-  ArrowUpCircle,
-  CheckCircle2,
-  Circle,
-  HelpCircle,
-  LucideIcon,
-  XCircle,
-} from "lucide-react";
-
-import { cn } from "../../lib/utils";
 import { Button } from "../../components/ui/button";
 import {
   Command,
@@ -26,22 +16,18 @@ import {
   PopoverTrigger,
 } from "../../components/ui/popover";
 import { useContext } from "react";
-import { FontContext } from "../../src/ui";
+import { AllUserFonts } from "../../src/ui";
 
-type allFontsT = {
-  fontName: {
-    family: string;
-    style: string;
-  };
-};
-
-export function ComboboxDemo({ currentFont }: { currentFont?: string }) {
+export function Combobox({ currentFont }: { currentFont?: string }) {
   const [open, setOpen] = React.useState(false);
   const [selectedStatus, setSelectedStatus] = React.useState<String | null>(
     null
   );
 
-  const allFonts = useContext(FontContext);
+  const [search, setSearch] = React.useState("");
+
+  const allUserFonts = useContext(AllUserFonts);
+  const all50UserFonts = allUserFonts.slice(0, 50);
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
@@ -75,37 +61,74 @@ export function ComboboxDemo({ currentFont }: { currentFont?: string }) {
       </PopoverTrigger>
       <PopoverContent className="p-0" side="bottom" align="end">
         <Command>
-          <CommandInput placeholder="Search Font..." />
-          <CommandList>
-            <CommandEmpty>No results found.</CommandEmpty>
-            <CommandGroup>
-              {allFonts?.map((font, index) => (
-                <CommandItem
-                  key={index}
-                  onSelect={(value) => {
-                    setSelectedStatus(value);
-                    parent.postMessage(
-                      {
-                        pluginMessage: {
-                          type: "selectFont",
-                          data: {
-                            currentFont: currentFont,
-                            targetFont: value,
+          <CommandInput
+            value={search}
+            onValueChange={setSearch}
+            placeholder="Search Font..."
+          />
+          {search !== "" ? (
+            <CommandList>
+              <CommandEmpty>No results found.</CommandEmpty>
+              <CommandGroup>
+                {allUserFonts?.map((font, index) => (
+                  <CommandItem
+                    key={index}
+                    onSelect={(targetFont) => {
+                      setSelectedStatus(targetFont);
+                      parent.postMessage(
+                        {
+                          pluginMessage: {
+                            type: "selectFont",
+                            data: {
+                              currentFont,
+                              targetFont,
+                            },
                           },
                         },
-                      },
-                      "*"
-                    );
-                    setOpen(false);
-                  }}
-                >
-                  <span>
-                    {`${font.fontName.family} - ${font.fontName.style}`}
-                  </span>
-                </CommandItem>
-              ))}
-            </CommandGroup>
-          </CommandList>
+                        "*"
+                      );
+                      setOpen(false);
+                    }}
+                  >
+                    <span>
+                      {`${font.fontName.family} - ${font.fontName.style}`}
+                    </span>
+                  </CommandItem>
+                ))}
+              </CommandGroup>
+            </CommandList>
+          ) : (
+            <CommandList>
+              <CommandEmpty>No results found.</CommandEmpty>
+              <CommandGroup>
+                {all50UserFonts?.map((font, index) => (
+                  <CommandItem
+                    key={index}
+                    onSelect={(targetFont) => {
+                      setSelectedStatus(targetFont);
+                      parent.postMessage(
+                        {
+                          pluginMessage: {
+                            type: "selectFont",
+                            data: {
+                              currentFont,
+                              targetFont,
+                            },
+                          },
+                        },
+                        "*"
+                      );
+                      setOpen(false);
+                    }}
+                  >
+                    <span>
+                      {`${font.fontName.family} - ${font.fontName.style}`}
+                    </span>
+                  </CommandItem>
+                ))}
+              </CommandGroup>
+            </CommandList>
+          )}
         </Command>
       </PopoverContent>
     </Popover>

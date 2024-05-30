@@ -2,49 +2,19 @@ figma.showUI(__html__, { height: 620, width: 350 });
 
 let fontMapping = {};
 
-// figma.on("selectionchange", async () => {
-//   // figma.ui.postMessage({
-//   //   type: "selection-change",
-//   //   isComponentSelected: figma.currentPage.selection.length > 0,
-//   //   selectedComponents: figma.currentPage.selection.map((x) => x.name),
-//   // });
-
-//   updateMappingObject(selectedTextNodes);
-//   console.log(fontMapping);
-// });
-
-async function replaceFontInTextLayers(textLayers) {
-  textLayers.forEach(async (textNode) => {
-    const newFont =
-      fontMapping[textNode.fontName.family + " - " + textNode.fontName.style];
-
-    if (newFont) {
-      const fontFamily = newFont.split(" - ")[0];
-      const fontWeight = newFont.split(" - ")[1];
-
-      const newFontObj = { family: fontFamily, style: fontWeight };
-
-      await figma.loadFontAsync(newFontObj);
-      textNode.fontName = newFontObj;
-    }
-  });
-}
-
-const loadPlugin = async () => {
-  const Fonts = await figma.listAvailableFontsAsync();
-  figma.ui.postMessage({ type: "allFonts", data: Fonts });
+(async function loadPlugin() {
+  const allUserFonts = await figma.listAvailableFontsAsync();
+  figma.ui.postMessage({ type: "allUserFontsData", data: allUserFonts });
   const selectedTextNodes = getAllSelectedTextNodes();
-  updateMappingObject(selectedTextNodes);
-  const convertedFonts = convertFontObjectToUserFonts(fontMapping);
-  figma.ui.postMessage({ type: "selectedFonts", data: convertedFonts });
-};
-
-loadPlugin();
+  updateFontMapping(selectedTextNodes);
+  const selectionFonts = convertFontMappingToSelectionFormat(fontMapping);
+  figma.ui.postMessage({ type: "selectionFontsData", data: selectionFonts });
+})();
 
 // Main function to run the plugin
 async function Replace() {
   const selectedTextNodes = getAllSelectedTextNodes();
-  await replaceFontInTextLayers(selectedTextNodes);
+  await replaceFontInTextNodes(selectedTextNodes);
   console.log("Font replaced successfully");
 }
 
@@ -70,9 +40,26 @@ figma.ui.onmessage = (message) => {
 
 ///utils
 
-function updateMappingObject(textLayers) {
+async function replaceFontInTextNodes(textNodes) {
+  textNodes.forEach(async (textNode) => {
+    const targetFont =
+      fontMapping[textNode.fontName.family + " - " + textNode.fontName.style];
+
+    if (targetFont) {
+      const fontFamily = targetFont.split(" - ")[0];
+      const fontStyle = targetFont.split(" - ")[1];
+
+      const targetFontObj = { family: fontFamily, style: fontStyle };
+
+      await figma.loadFontAsync(targetFontObj);
+      textNode.fontName = targetFontObj;
+    }
+  });
+}
+
+function updateFontMapping(textNodes) {
   fontMapping = {};
-  textLayers.forEach((textNode) => {
+  textNodes.forEach((textNode) => {
     const key = textNode.fontName.family + " - " + textNode.fontName.style;
     if (!fontMapping.hasOwnProperty(key)) {
       fontMapping[key] = null;
@@ -80,28 +67,28 @@ function updateMappingObject(textLayers) {
   });
 }
 
-function convertFontObjectToUserFonts(fontObject) {
+function convertFontMappingToSelectionFormat(fontObject) {
   const userFontsObj = {};
 
-  for (const fontName in fontObject) {
-    const fontFamily = fontName.split(" - ")[0];
-    const fontWeight = fontName.split(" - ")[1];
+  for (const key in fontObject) {
+    const fontFamily = key.split(" - ")[0];
+    const fontStyle = key.split(" - ")[1];
 
     if (!userFontsObj[fontFamily]) {
       userFontsObj[fontFamily] = {
-        fontName: fontFamily,
-        fontWeights: [fontWeight],
+        fontFamily,
+        fontStyles: [fontStyle],
       };
     } else {
-      userFontsObj[fontFamily].fontWeights.push(fontWeight);
+      userFontsObj[fontFamily].fontStyles.push(fontStyle);
     }
   }
 
   const userFontsArray = [];
 
-  for (const fontName in userFontsObj) {
-    const { fontWeights } = userFontsObj[fontName];
-    userFontsArray.push({ fontName, fontWeights });
+  for (const fontFamily in userFontsObj) {
+    const { fontStyles } = userFontsObj[fontFamily];
+    userFontsArray.push({ fontFamily, fontStyles });
   }
 
   return userFontsArray;

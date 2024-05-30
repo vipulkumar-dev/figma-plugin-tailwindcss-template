@@ -4,37 +4,30 @@ import "./style.css";
 
 import App from "./App";
 
-export const FontContext = createContext(null);
-export const SelectedFonts = createContext(null);
+export const AllUserFonts = createContext(null);
+export const SelectionFonts = createContext(null);
 
 const UI = () => {
-  const [allFonts, setAllFonts] = useState<allfontsT[]>(null);
-  const [selectedFonts, setSelectedFonts] = useState<allfontsT[]>(null);
-
-  type allfontsT = {
-    fontName: {
-      family: string;
-      style: string;
-    };
-  };
+  const [allUserFonts, setAllUserFonts] = useState(null);
+  const [selectionFonts, setSelectionFonts] = useState(null);
 
   onmessage = async (event) => {
-    if (event.data.pluginMessage.type == "allFonts") {
+    if (event.data.pluginMessage.type == "allUserFontsData") {
       console.log(event.data.pluginMessage.data);
-      setAllFonts(event.data.pluginMessage.data);
+      setAllUserFonts(event.data.pluginMessage.data);
     }
-    if (event.data.pluginMessage.type === "selectedFonts") {
-      setSelectedFonts(event.data.pluginMessage.data);
+    if (event.data.pluginMessage.type === "selectionFontsData") {
+      setSelectionFonts(event.data.pluginMessage.data);
     }
   };
 
   return (
     <>
-      <FontContext.Provider value={allFonts}>
-        <SelectedFonts.Provider value={selectedFonts}>
+      <AllUserFonts.Provider value={allUserFonts}>
+        <SelectionFonts.Provider value={selectionFonts}>
           <App />
-        </SelectedFonts.Provider>
-      </FontContext.Provider>
+        </SelectionFonts.Provider>
+      </AllUserFonts.Provider>
     </>
   );
 };
