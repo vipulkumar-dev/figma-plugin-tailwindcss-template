@@ -17,12 +17,17 @@ import {
 } from "../../components/ui/popover";
 import { useContext } from "react";
 import { AllUserFonts } from "../../src/ui";
+import useStore from "../../hooks/useStore";
 
 export function Combobox({ currentFont }: { currentFont?: string }) {
   const [open, setOpen] = React.useState(false);
   const [selectedStatus, setSelectedStatus] = React.useState<String | null>(
-    null
+    null,
   );
+
+  const fontMapping = useStore((state) => state.fontMapping);
+  const updateFontMapping = useStore((state) => state.updateFontMapping);
+  console.log(fontMapping);
 
   const [search, setSearch] = React.useState("");
 
@@ -34,10 +39,10 @@ export function Combobox({ currentFont }: { currentFont?: string }) {
       <PopoverTrigger asChild>
         <Button
           variant="outline"
-          className="justify-between border-input/10 font-normal  flex grow gap-0 py-[0.7270955165692008em] px-[1.0909681611435997em] w-auto rounded border border-solid bg-[#ffffff0a]  border-white border-opacity-10 text-white text-opacity-60"
+          className="flex w-auto grow  justify-between gap-0 rounded border border-solid border-input/10 border-white border-opacity-10 bg-[#ffffff0a] px-[1.0909681611435997em]  py-[0.7270955165692008em] font-normal text-white text-opacity-60"
         >
           {selectedStatus ? (
-            <div className="text-white truncate max-w-[125px]">
+            <div className="max-w-[125px] truncate text-white">
               {selectedStatus}
             </div>
           ) : (
@@ -47,7 +52,7 @@ export function Combobox({ currentFont }: { currentFont?: string }) {
             viewBox="0 0 11 10"
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
-            className="shrink-0  w-[0.7147498375568551em]"
+            className="w-[0.7147498375568551em]  shrink-0"
           >
             <path
               fillRule="evenodd"
@@ -75,18 +80,20 @@ export function Combobox({ currentFont }: { currentFont?: string }) {
                     key={index}
                     onSelect={(targetFont) => {
                       setSelectedStatus(targetFont);
-                      parent.postMessage(
-                        {
-                          pluginMessage: {
-                            type: "selectFont",
-                            data: {
-                              currentFont,
-                              targetFont,
-                            },
-                          },
-                        },
-                        "*"
-                      );
+                      updateFontMapping("{ targetFont, currentFont }");
+
+                      // parent.postMessage(
+                      //   {
+                      //     pluginMessage: {
+                      //       type: "selectFont",
+                      //       data: {
+                      //         currentFont,
+                      //         targetFont,
+                      //       },
+                      //     },
+                      //   },
+                      //   "*",
+                      // );
                       setOpen(false);
                     }}
                   >
@@ -114,7 +121,7 @@ export function Combobox({ currentFont }: { currentFont?: string }) {
                           },
                         },
                       },
-                      "*"
+                      "*",
                     );
                     setOpen(false);
                   }}
@@ -136,7 +143,7 @@ export function Combobox({ currentFont }: { currentFont?: string }) {
                             },
                           },
                         },
-                        "*"
+                        "*",
                       );
                       setOpen(false);
                     }}

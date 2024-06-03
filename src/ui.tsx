@@ -3,6 +3,7 @@ import ReactDOM from "react-dom/client";
 import "./style.css";
 
 import App from "./App";
+import useStore from "../hooks/useStore";
 
 export const AllUserFonts = createContext(null);
 export const SelectionFonts = createContext(null);
@@ -11,6 +12,8 @@ const UI = () => {
   const [allUserFonts, setAllUserFonts] = useState(null);
   const [selectionFonts, setSelectionFonts] = useState(null);
 
+  const updateFontMapping = useStore((state) => state.updateFontMapping);
+
   onmessage = async (event) => {
     if (event.data.pluginMessage.type == "allUserFontsData") {
       console.log(event.data.pluginMessage.data);
@@ -18,6 +21,9 @@ const UI = () => {
     }
     if (event.data.pluginMessage.type === "selectionFontsData") {
       setSelectionFonts(event.data.pluginMessage.data);
+    }
+    if (event.data.pluginMessage.type === "fontMappingData") {
+      updateFontMapping("event.data.pluginMessage.data");
     }
   };
 

@@ -7,6 +7,7 @@ let fontMapping = {};
   figma.ui.postMessage({ type: "allUserFontsData", data: allUserFonts });
   const selectedTextNodes = getAllSelectedTextNodes();
   updateFontMapping(selectedTextNodes);
+  figma.ui.postMessage({ type: "fontMappingData", data: fontMapping });
   const selectionFonts = convertFontMappingToSelectionFormat(fontMapping);
   figma.ui.postMessage({ type: "selectionFontsData", data: selectionFonts });
 })();
