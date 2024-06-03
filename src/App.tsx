@@ -3,6 +3,7 @@ import { useContext } from "react";
 import { Combobox } from "../components/ui/comboBox";
 import { Checkbox } from "../components/ui/checkbox";
 import { SelectionFonts } from "../src/ui";
+import useStore from "../hooks/useStore";
 
 interface FontGroupProps {
   fontFamily: string;
@@ -13,6 +14,9 @@ const FontGroup = ({ fontFamily, fontStyles }: FontGroupProps) => {
   const intialState = fontStyles.map((fontStyle) => ({
     [fontFamily + " - " + fontStyle]: null,
   }));
+  const bears = useStore((state) => state.bears);
+
+  console.log(bears, "bears");
 
   console.log(intialState);
 
