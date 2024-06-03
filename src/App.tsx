@@ -10,6 +10,12 @@ interface FontGroupProps {
 }
 
 const FontGroup = ({ fontFamily, fontStyles }: FontGroupProps) => {
+  const intialState = fontStyles.map((fontStyle) => ({
+    [fontFamily + " - " + fontStyle]: null,
+  }));
+
+  console.log(intialState);
+
   return (
     <div>
       <div className="ml-6 mr-5 mt-0 flex justify-between gap-2.5 whitespace-nowrap  px-px leading-4 tracking-normal text-white text-opacity-75">
