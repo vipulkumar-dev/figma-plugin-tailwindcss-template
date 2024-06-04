@@ -3,13 +3,7 @@ figma.showUI(__html__, { height: 600, width: 350 });
 let fontMapping = {};
 
 (async function loadPlugin() {
-  const allUserFonts = await figma.listAvailableFontsAsync();
-  figma.ui.postMessage({ type: "allUserFontsData", data: allUserFonts });
-  const selectedTextNodes = getAllSelectedTextNodes();
-  updateFontMapping(selectedTextNodes);
-  figma.ui.postMessage({ type: "fontMappingData", data: fontMapping });
-  const selectionFonts = convertFontMappingToSelectionFormat(fontMapping);
-  figma.ui.postMessage({ type: "selectionFontsData", data: selectionFonts });
+  Reload();
 })();
 
 // Main function to run the plugin
@@ -24,8 +18,7 @@ async function Reload() {
   figma.ui.postMessage({ type: "allUserFontsData", data: allUserFonts });
   const selectedTextNodes = getAllSelectedTextNodes();
   updateFontMapping(selectedTextNodes);
-  const selectionFonts = convertFontMappingToSelectionFormat(fontMapping);
-  figma.ui.postMessage({ type: "selectionFontsData", data: selectionFonts });
+  figma.ui.postMessage({ type: "fontMappingData", data: fontMapping });
 }
 
 // Example usage:
@@ -80,33 +73,6 @@ function updateFontMapping(textNodes) {
       fontMapping[key] = null;
     }
   });
-}
-
-function convertFontMappingToSelectionFormat(fontObject) {
-  const userFontsObj = {};
-
-  for (const key in fontObject) {
-    const fontFamily = key.split(" - ")[0];
-    const fontStyle = key.split(" - ")[1];
-
-    if (!userFontsObj[fontFamily]) {
-      userFontsObj[fontFamily] = {
-        fontFamily,
-        fontStyles: [fontStyle],
-      };
-    } else {
-      userFontsObj[fontFamily].fontStyles.push(fontStyle);
-    }
-  }
-
-  const userFontsArray = [];
-
-  for (const fontFamily in userFontsObj) {
-    const { fontStyles } = userFontsObj[fontFamily];
-    userFontsArray.push({ fontFamily, fontStyles });
-  }
-
-  return userFontsArray;
 }
 
 function getAllSelectedTextNodes() {

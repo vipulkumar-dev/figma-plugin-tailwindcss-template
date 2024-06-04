@@ -1,9 +1,10 @@
+import { ReplaceButton } from "../components/replaceButton";
 import * as React from "react";
 import { useContext } from "react";
 import { Combobox } from "../components/ui/comboBox";
 import { Checkbox } from "../components/ui/checkbox";
-import { SelectionFonts } from "../src/ui";
 import useStore from "../hooks/useStore";
+import { convertFontMappingToSelectionFormat } from "../lib/utils";
 
 interface FontGroupProps {
   fontFamily: string;
@@ -52,8 +53,8 @@ const FontGroup = ({ fontFamily, fontStyles }: FontGroupProps) => {
 };
 
 const App: React.FC = () => {
-  const selectionFonts = useContext(SelectionFonts);
-  console.log(selectionFonts);
+  const fontMapping = useStore((state) => state.fontMapping);
+  const selectionFonts = convertFontMappingToSelectionFormat(fontMapping);
 
   return (
     <div className="flex h-screen max-w-[375px] flex-col bg-[#2C2C2C] pt-[0.6361273554256011em] text-[13px]">
@@ -97,19 +98,7 @@ const App: React.FC = () => {
       </div>
       <div className="min-h-[1px] w-full bg-white bg-opacity-10" />
       <footer className="flex w-full gap-3 whitespace-nowrap bg-zinc-800 p-3  text-center font-semibold text-white">
-        <button
-          onClick={() => {
-            parent.postMessage({ pluginMessage: { type: "replace" } }, "*");
-          }}
-          className="flex flex-1 items-center justify-center rounded bg-sky-500 px-4 py-3"
-        >
-          <div className="flex gap-1.5">
-            <span className="leading-4 tracking-normal">Replace</span>
-            <span className="my-auto justify-center rounded-[139.925px] bg-white bg-opacity-30  px-1 py-1 text-[0.8180636777128005em] leading-3 tracking-wide">
-              0
-            </span>
-          </div>
-        </button>
+        <ReplaceButton />
         <button
           onClick={() => {
             parent.postMessage({ pluginMessage: { type: "reload" } }, "*");

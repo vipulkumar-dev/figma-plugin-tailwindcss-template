@@ -1,7 +1,7 @@
 import { create } from "zustand";
 
 interface BearState {
-  fontMapping: number;
+  fontMapping: object;
   updateFontMapping: (fontMap: any) => void;
 }
 

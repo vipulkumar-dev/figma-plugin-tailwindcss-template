@@ -21,19 +21,34 @@ import useStore from "../../hooks/useStore";
 
 export function Combobox({ currentFont }: { currentFont?: string }) {
   const [open, setOpen] = React.useState(false);
-  const [selectedStatus, setSelectedStatus] = React.useState<String | null>(
-    null,
-  );
-
-  const fontMapping = useStore((state) => state.fontMapping);
-  const updateFontMapping = useStore((state) => state.updateFontMapping);
-  console.log(fontMapping);
-
   const [search, setSearch] = React.useState("");
 
-  const allUserFonts = useContext(AllUserFonts);
-  const all50UserFonts = allUserFonts.slice(0, 50);
+  const updateFontMapping = useStore((state) => state.updateFontMapping);
+  const fontMapping = useStore((state) => state.fontMapping);
 
+  const allUserFonts = useContext(AllUserFonts);
+
+  function handleSelect(targetFont) {
+    if (targetFont === "Select none") {
+      updateFontMapping({ ...fontMapping, [currentFont]: null });
+    } else {
+      updateFontMapping({ ...fontMapping, [currentFont]: targetFont });
+    }
+
+    parent.postMessage(
+      {
+        pluginMessage: {
+          type: "selectFont",
+          data: {
+            currentFont,
+            targetFont,
+          },
+        },
+      },
+      "*",
+    );
+    setOpen(false);
+  }
   return (
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
@@ -41,9 +56,9 @@ export function Combobox({ currentFont }: { currentFont?: string }) {
           variant="outline"
           className="flex w-auto grow  justify-between gap-0 rounded border border-solid border-input/10 border-white border-opacity-10 bg-[#ffffff0a] px-[1.0909681611435997em]  py-[0.7270955165692008em] font-normal text-white text-opacity-60"
         >
-          {selectedStatus ? (
+          {fontMapping[currentFont] ? (
             <div className="max-w-[125px] truncate text-white">
-              {selectedStatus}
+              {fontMapping[currentFont]}
             </div>
           ) : (
             <div>Select Font</div>
@@ -76,27 +91,7 @@ export function Combobox({ currentFont }: { currentFont?: string }) {
               <CommandEmpty>No results found.</CommandEmpty>
               <CommandGroup>
                 {allUserFonts?.map((font, index) => (
-                  <CommandItem
-                    key={index}
-                    onSelect={(targetFont) => {
-                      setSelectedStatus(targetFont);
-                      updateFontMapping("{ targetFont, currentFont }");
-
-                      // parent.postMessage(
-                      //   {
-                      //     pluginMessage: {
-                      //       type: "selectFont",
-                      //       data: {
-                      //         currentFont,
-                      //         targetFont,
-                      //       },
-                      //     },
-                      //   },
-                      //   "*",
-                      // );
-                      setOpen(false);
-                    }}
-                  >
+                  <CommandItem key={index} onSelect={handleSelect}>
                     <span>
                       {`${font.fontName.family} - ${font.fontName.style}`}
                     </span>
@@ -108,46 +103,11 @@ export function Combobox({ currentFont }: { currentFont?: string }) {
             <CommandList>
               <CommandEmpty>No results found.</CommandEmpty>
               <CommandGroup>
-                <CommandItem
-                  onSelect={(targetFont) => {
-                    setSelectedStatus(null);
-                    parent.postMessage(
-                      {
-                        pluginMessage: {
-                          type: "selectFont",
-                          data: {
-                            currentFont,
-                            targetFont,
-                          },
-                        },
-                      },
-                      "*",
-                    );
-                    setOpen(false);
-                  }}
-                >
+                <CommandItem onSelect={handleSelect}>
                   <span>{`Select none`}</span>
                 </CommandItem>
-                {all50UserFonts?.map((font, index) => (
-                  <CommandItem
-                    key={index}
-                    onSelect={(targetFont) => {
-                      setSelectedStatus(targetFont);
-                      parent.postMessage(
-                        {
-                          pluginMessage: {
-                            type: "selectFont",
-                            data: {
-                              currentFont,
-                              targetFont,
-                            },
-                          },
-                        },
-                        "*",
-                      );
-                      setOpen(false);
-                    }}
-                  >
+                {allUserFonts.slice(0, 50)?.map((font, index) => (
+                  <CommandItem key={index} onSelect={handleSelect}>
                     <span>
                       {`${font.fontName.family} - ${font.fontName.style}`}
                     </span>

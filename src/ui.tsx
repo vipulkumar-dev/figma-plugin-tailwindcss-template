@@ -6,11 +6,9 @@ import App from "./App";
 import useStore from "../hooks/useStore";
 
 export const AllUserFonts = createContext(null);
-export const SelectionFonts = createContext(null);
 
 const UI = () => {
   const [allUserFonts, setAllUserFonts] = useState(null);
-  const [selectionFonts, setSelectionFonts] = useState(null);
 
   const updateFontMapping = useStore((state) => state.updateFontMapping);
 
@@ -19,20 +17,15 @@ const UI = () => {
       console.log(event.data.pluginMessage.data);
       setAllUserFonts(event.data.pluginMessage.data);
     }
-    if (event.data.pluginMessage.type === "selectionFontsData") {
-      setSelectionFonts(event.data.pluginMessage.data);
-    }
     if (event.data.pluginMessage.type === "fontMappingData") {
-      updateFontMapping("event.data.pluginMessage.data");
+      updateFontMapping(event.data.pluginMessage.data);
     }
   };
 
   return (
     <>
       <AllUserFonts.Provider value={allUserFonts}>
-        <SelectionFonts.Provider value={selectionFonts}>
-          <App />
-        </SelectionFonts.Provider>
+        <App />
       </AllUserFonts.Provider>
     </>
   );
