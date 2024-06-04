@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { Button } from "../../components/ui/button";
+import { Button } from "./ui/button";
 import {
   Command,
   CommandEmpty,
@@ -9,17 +9,13 @@ import {
   CommandInput,
   CommandItem,
   CommandList,
-} from "../../components/ui/command";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "../../components/ui/popover";
+} from "./ui/command";
+import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover";
 import { useContext } from "react";
-import { AllUserFonts } from "../../src/ui";
-import useStore from "../../hooks/useStore";
+import { AllUserFonts } from "../src/ui";
+import useStore from "../hooks/useStore";
 
-export function Combobox({ currentFont }: { currentFont?: string }) {
+export function FontSelecter({ currentFont }: { currentFont?: string }) {
   const [open, setOpen] = React.useState(false);
   const [search, setSearch] = React.useState("");
 
@@ -106,7 +102,7 @@ export function Combobox({ currentFont }: { currentFont?: string }) {
                 <CommandItem onSelect={handleSelect}>
                   <span>{`Select none`}</span>
                 </CommandItem>
-                {allUserFonts.slice(0, 50)?.map((font, index) => (
+                {allUserFonts?.slice(0, 50)?.map((font, index) => (
                   <CommandItem key={index} onSelect={handleSelect}>
                     <span>
                       {`${font.fontName.family} - ${font.fontName.style}`}

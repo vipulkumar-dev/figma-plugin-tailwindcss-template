@@ -1,10 +1,9 @@
-import { ReplaceButton } from "../components/replaceButton";
 import * as React from "react";
-import { useContext } from "react";
-import { Combobox } from "../components/ui/comboBox";
-import { Checkbox } from "../components/ui/checkbox";
 import useStore from "../hooks/useStore";
+import { FontSelecter } from "../components/fontSelecter";
+import { ReplaceButton } from "../components/replaceButton";
 import { convertFontMappingToSelectionFormat } from "../lib/utils";
+import { ComboSelecter } from "../components/comboSelecter";
 
 interface FontGroupProps {
   fontFamily: string;
@@ -14,14 +13,10 @@ interface FontGroupProps {
 const FontGroup = ({ fontFamily, fontStyles }: FontGroupProps) => {
   return (
     <div>
-      <div className="ml-6 mr-5 mt-0 flex justify-between gap-2.5 whitespace-nowrap  px-px leading-4 tracking-normal text-white text-opacity-75">
+      <div className="mx-[1.299545159194282em]  mt-0 flex justify-between gap-2.5 whitespace-nowrap  px-px leading-4 tracking-normal text-white text-opacity-75">
         <div className="my-auto cursor-default">{fontFamily}</div>
-        <img
-          loading="lazy"
-          src="https://cdn.builder.io/api/v1/image/assets/TEMP/b1cd2252f081dc386f97e7f5ea59a97e0501d863054b38d1b4d9178f49672047?apiKey=40dc68eb1cfd47748774463cbd8a70f3&"
-          alt=""
-          className="aspect-square w-[2.014294996751137em] shrink-0"
-        />
+
+        <ComboSelecter currentFontFamily={fontFamily} />
       </div>
       {fontStyles?.map((fontStyle) => (
         <div
@@ -42,10 +37,10 @@ const FontGroup = ({ fontFamily, fontStyles }: FontGroupProps) => {
                   className="shrink-0  w-[0.7147498375568551em]"
                 />
               </div> */}
-          <Combobox
+          <FontSelecter
             key={fontFamily + " - " + fontStyle}
             currentFont={fontFamily + " - " + fontStyle}
-          ></Combobox>
+          ></FontSelecter>
         </div>
       ))}
     </div>
@@ -58,7 +53,7 @@ const App: React.FC = () => {
 
   return (
     <div className="flex h-screen max-w-[375px] flex-col bg-[#2C2C2C] pt-[0.6361273554256011em] text-[13px]">
-      <main className="custom_scrollbar flex  h-full w-full flex-col justify-start overflow-auto py-[1em]">
+      <main className="flex  h-full w-full flex-col justify-start overflow-auto py-[1em]">
         <section className="flex flex-col gap-[2.4541910331384016em]">
           {selectionFonts?.map((font) => (
             <FontGroup
@@ -70,14 +65,13 @@ const App: React.FC = () => {
         </section>
       </main>
       <div className="mt-auto flex  items-center  gap-[0.5em] p-[1.299545159194282em]  leading-4 tracking-normal text-white text-opacity-80">
-        {/* <Checkbox defaultChecked className="w-[1.2em] aspect-square" /> */}
         <svg
           viewBox="0 0 24 24"
           className="aspect-square w-[1.2em]"
           fill="none"
           xmlns="http://www.w3.org/2000/svg"
         >
-          <circle cx="12" cy="12" r="10" stroke="white" stroke-width="1.5" />
+          <circle cx="12" cy="12" r="10" stroke="white" strokeWidth="1.5" />
           <path
             d="M12 17V11"
             stroke="white"
