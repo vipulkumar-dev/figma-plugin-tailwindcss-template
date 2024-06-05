@@ -1,12 +1,14 @@
 figma.showUI(__html__, { height: 600, width: 350 });
 
 let fontMapping = {};
+let denormalizedAllFonts = {};
 
 (async function loadPlugin() {
   Reload();
 })();
 
 // Main function to run the plugin
+
 async function Replace() {
   const selectedTextNodes = getAllSelectedTextNodes();
   await replaceFontInTextNodes(selectedTextNodes);
@@ -15,7 +17,12 @@ async function Replace() {
 
 async function Reload() {
   const allUserFonts = await figma.listAvailableFontsAsync();
-  figma.ui.postMessage({ type: "allUserFontsData", data: allUserFonts });
+  figma.ui.postMessage({
+    type: "allUserFontsData",
+    data: normilizeAllFont(allUserFonts),
+  });
+  allfontToDenormalizedAllFonts(allUserFonts);
+
   const selectedTextNodes = getAllSelectedTextNodes();
   updateFontMapping(selectedTextNodes);
   figma.ui.postMessage({ type: "fontMappingData", data: fontMapping });
@@ -35,8 +42,7 @@ figma.ui.onmessage = (message) => {
       break;
 
     case "selectFont":
-      console.log(message.data);
-      fontMapping[message.data.currentFont] = message.data.targetFont;
+      fontMapping = message.data;
       console.log(fontMapping);
 
       break;
@@ -44,6 +50,14 @@ figma.ui.onmessage = (message) => {
     // code block
   }
 };
+
+function allfontToDenormalizedAllFonts(allUserFonts) {
+  allUserFonts.forEach((font) => {
+    denormalizedAllFonts[
+      font.fontName.family + " - " + normilize(font.fontName.style)
+    ] = font.fontName.style;
+  });
+}
 
 ///utils
 
@@ -54,7 +68,7 @@ async function replaceFontInTextNodes(textNodes) {
 
     if (targetFont) {
       const fontFamily = targetFont.split(" - ")[0];
-      const fontStyle = targetFont.split(" - ")[1];
+      const fontStyle = denormalizedAllFonts[targetFont];
 
       const targetFontObj = { family: fontFamily, style: fontStyle };
 
@@ -68,7 +82,8 @@ function updateFontMapping(textNodes) {
   fontMapping = {};
   textNodes.forEach((textNode) => {
     if (!textNode.fontName.family || !textNode.fontName.style) return;
-    const key = textNode.fontName.family + " - " + textNode.fontName.style;
+    const key =
+      textNode.fontName.family + " - " + normilize(textNode.fontName.style);
     if (!fontMapping.hasOwnProperty(key)) {
       fontMapping[key] = null;
     }
@@ -96,4 +111,28 @@ function getAllSelectedTextNodes() {
   });
 
   return selectedTextNodes;
+}
+
+function normilize(input: string) {
+  // Remove spaces
+  const step1 = input.replace(/\s/g, "");
+
+  // Add spaces on Capital case
+  const step2 = step1.replace(/([a-z])([A-Z])/g, "$1 $2");
+
+  // Capitalize the first letter of each word
+  const step3 = step2.replace(/\b\w/g, (match) => match.toUpperCase());
+
+  return step3;
+}
+
+function normilizeAllFont(allUserFonts) {
+  return allUserFonts.map((font) => {
+    return {
+      fontName: {
+        family: font.fontName.family,
+        style: normilize(font.fontName.style),
+      },
+    };
+  });
 }

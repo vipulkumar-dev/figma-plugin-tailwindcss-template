@@ -4,7 +4,6 @@ import { getCountFromFontMapping } from "../lib/utils";
 
 export function ReplaceButton({}) {
   const fontMapping = useStore((state) => state.fontMapping);
-
   const count = getCountFromFontMapping(fontMapping);
 
   return (

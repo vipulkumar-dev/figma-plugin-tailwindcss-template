@@ -35,10 +35,7 @@ export function FontSelecter({ currentFont }: { currentFont?: string }) {
       {
         pluginMessage: {
           type: "selectFont",
-          data: {
-            currentFont,
-            targetFont,
-          },
+          data: { ...fontMapping, [currentFont]: targetFont },
         },
       },
       "*",

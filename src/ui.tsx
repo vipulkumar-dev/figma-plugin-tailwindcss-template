@@ -14,7 +14,7 @@ const UI = () => {
 
   onmessage = async (event) => {
     if (event.data.pluginMessage.type == "allUserFontsData") {
-      console.log(event.data.pluginMessage.data);
+      // console.log(event.data.pluginMessage.data);
       setAllUserFonts(event.data.pluginMessage.data);
     }
     if (event.data.pluginMessage.type === "fontMappingData") {

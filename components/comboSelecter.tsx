@@ -27,19 +27,31 @@ export function ComboSelecter({
   const fontMapping = useStore((state) => state.fontMapping);
 
   const allUserFonts = useContext(AllUserFonts);
-  const [allUserFontsFamily, userFontsArray] =
+  const [allUserFontsFamilyObject, allUserFontsFamilyArray] =
     allUserFontToOnlyFamily(allUserFonts);
 
   function handleSelect(targetFont) {
-    let targetDummy = "F37 Ginger";
     let tempFontMapping = {};
 
     for (const key in fontMapping) {
       const fontFamily = key.split(" - ")[0];
       const fontStyle = key.split(" - ")[1];
 
-      if (fontFamily === currentFontFamily) {
-        tempFontMapping[key] = targetDummy + " - " + fontStyle;
+      const isStyleAvailable = allUserFontsFamilyObject[targetFont].find(
+        (AvailabefontStyle) => {
+          return AvailabefontStyle == fontStyle;
+        },
+      );
+
+      // console.log(allUserFontsFamilyObject[targetFont]);
+      // console.log(isStyleAvailable);
+
+      if (isStyleAvailable == undefined) {
+        // tempFontMapping[key] = "Style Not Found";
+      }
+
+      if (fontFamily === currentFontFamily && isStyleAvailable) {
+        tempFontMapping[key] = targetFont + " - " + fontStyle;
       }
     }
 
@@ -47,18 +59,15 @@ export function ComboSelecter({
 
     // const parent = window.parent;
 
-    // parent.postMessage(
-    //   {
-    //     pluginMessage: {
-    //       type: "selectFont",
-    //       data: {
-    //         currentFont,
-    //         targetFont,
-    //       },
-    //     },
-    //   },
-    //   "*",
-    // );
+    parent.postMessage(
+      {
+        pluginMessage: {
+          type: "selectFont",
+          data: { ...fontMapping, ...tempFontMapping },
+        },
+      },
+      "*",
+    );
 
     console.log(tempFontMapping);
 
@@ -99,11 +108,9 @@ export function ComboSelecter({
             <CommandList>
               <CommandEmpty>No results found.</CommandEmpty>
               <CommandGroup>
-                {allUserFonts?.map((font, index) => (
-                  <CommandItem key={index} onSelect={handleSelect}>
-                    <span>
-                      {`${font.fontName.family} - ${font.fontName.style}`}
-                    </span>
+                {allUserFontsFamilyArray?.map((font, index) => (
+                  <CommandItem key={font.fontFamily} onSelect={handleSelect}>
+                    <span>{`${font.fontFamily}`}</span>
                   </CommandItem>
                 ))}
               </CommandGroup>
@@ -112,11 +119,8 @@ export function ComboSelecter({
             <CommandList>
               <CommandEmpty>No results found.</CommandEmpty>
               <CommandGroup>
-                <CommandItem onSelect={handleSelect}>
-                  <span>{`Select none`}</span>
-                </CommandItem>
-                {userFontsArray?.slice(0, 50)?.map((font, index) => (
-                  <CommandItem key={index} onSelect={handleSelect}>
+                {allUserFontsFamilyArray?.slice(0, 50)?.map((font, index) => (
+                  <CommandItem key={font.fontFamily} onSelect={handleSelect}>
                     <span>{`${font.fontFamily}`}</span>
                   </CommandItem>
                 ))}
@@ -130,28 +134,28 @@ export function ComboSelecter({
 }
 
 function allUserFontToOnlyFamily(allUserFonts): [any, any] {
-  const allUserFontsFamily = {};
-  const userFontsArray = [];
+  const allUserFontsFamilyObject = {};
+  const allUserFontsFamilyArray = [];
   if (!allUserFonts) {
-    return [allUserFontsFamily, userFontsArray];
+    return [allUserFontsFamilyObject, allUserFontsFamilyArray];
   }
 
   for (const font of allUserFonts) {
-    if (!allUserFontsFamily[font.fontName.family]) {
-      allUserFontsFamily[font.fontName.family] = [font.fontName.style];
+    if (!allUserFontsFamilyObject[font.fontName.family]) {
+      allUserFontsFamilyObject[font.fontName.family] = [font.fontName.style];
     } else {
-      allUserFontsFamily[font.fontName.family].push(font.fontName.style);
+      allUserFontsFamilyObject[font.fontName.family].push(font.fontName.style);
     }
   }
 
-  for (const key in allUserFontsFamily) {
-    userFontsArray.push({
+  for (const key in allUserFontsFamilyObject) {
+    allUserFontsFamilyArray.push({
       fontFamily: key,
     });
   }
 
-  console.log(allUserFontsFamily);
-  console.log(userFontsArray);
+  // console.log(allUserFontsFamilyObject);
+  // console.log(allUserFontsFamilyArray);
 
-  return [allUserFontsFamily, userFontsArray];
+  return [allUserFontsFamilyObject, allUserFontsFamilyArray];
 }
