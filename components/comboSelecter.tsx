@@ -43,9 +43,6 @@ export function ComboSelecter({
         },
       );
 
-      // console.log(allUserFontsFamilyObject[targetFont]);
-      // console.log(isStyleAvailable);
-
       if (isStyleAvailable == undefined) {
         // tempFontMapping[key] = "Style Not Found";
       }
@@ -57,8 +54,6 @@ export function ComboSelecter({
 
     setFontMapping({ ...fontMapping, ...tempFontMapping });
 
-    // const parent = window.parent;
-
     parent.postMessage(
       {
         pluginMessage: {
@@ -68,8 +63,6 @@ export function ComboSelecter({
       },
       "*",
     );
-
-    console.log(tempFontMapping);
 
     setOpen(false);
   }

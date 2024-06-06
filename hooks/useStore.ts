@@ -1,11 +1,11 @@
 import { create } from "zustand";
 
-interface BearState {
+interface fontMappingState {
   fontMapping: object;
   setFontMapping: (fontMap: any) => void;
 }
 
-const useStore = create<BearState>()((set) => ({
+const useStore = create<fontMappingState>()((set) => ({
   fontMapping: null,
   setFontMapping: (fontMap) => set(() => ({ fontMapping: fontMap })),
 }));

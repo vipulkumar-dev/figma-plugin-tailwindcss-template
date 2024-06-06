@@ -1,6 +1,23 @@
-# **🔌 Currently Under Development**
+# **Simple Font Replacer**
 
-This is the template that I wish I had when I first started building out [Bricks](https://github.com/bricks-cloud/bricks).
+Introducing the Simple Font Replacer, which can replace entire font families with just two clicks, so you can optimize your creative workflow. Embrace the automated process of changing individual text sizes, styles, or weights—our plugin takes care of it all!
+
+Its like Magic
+With Simple Font Replacer, simply select a frame containing text elements or directly on individual text elements and choose a new font family from the plugin. It will automatically apply the new font to your text, preserving existing styles, and sizes.
+
+To use the Simple Font Replacer, follow these easy steps:
+
+Install the plugin from the Figma Community.
+
+1. Open the Simple Font Replacer
+1. Select a frame containing text elements or directly selecting your text elements that you wish to modify.
+1. Search and select the desired replacement font family with our integrated font name search.
+1. Click on the "Replace" button to apply it to your text.
+
+<!-- Support me
+If you find the Easy Font Swap plugin valuable and want to support its development, please consider becoming a supporter on Ko-fi! Your support helps me continue to create and maintain useful tools for you and the figma design community. Visit my Ko-fi page at https://ko-fi.com/joshiee to learn more and show your support. -->
+
+<!-- Contact me at hello@joshiee.design if you need support or just wanna share how this tool helped you and your workflow! -->
 
 #### **Technologies Used**:
 
@@ -9,6 +26,8 @@ This is the template that I wish I had when I first started building out [Bricks
 3. Tailwindcss
 4. Webpack
 5. Yarn
+6. ShadeCn
+7. Zustand
 
 #### **To get started**:
 
