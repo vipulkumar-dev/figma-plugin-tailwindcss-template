@@ -23,7 +23,7 @@ export function ComboSelecter({
   const [open, setOpen] = React.useState(false);
   const [search, setSearch] = React.useState("");
 
-  const updateFontMapping = useStore((state) => state.updateFontMapping);
+  const setFontMapping = useStore((state) => state.setFontMapping);
   const fontMapping = useStore((state) => state.fontMapping);
 
   const allUserFonts = useContext(AllUserFonts);
@@ -55,7 +55,7 @@ export function ComboSelecter({
       }
     }
 
-    updateFontMapping({ ...fontMapping, ...tempFontMapping });
+    setFontMapping({ ...fontMapping, ...tempFontMapping });
 
     // const parent = window.parent;
 

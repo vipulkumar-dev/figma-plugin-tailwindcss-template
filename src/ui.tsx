@@ -10,7 +10,7 @@ export const AllUserFonts = createContext(null);
 const UI = () => {
   const [allUserFonts, setAllUserFonts] = useState(null);
 
-  const updateFontMapping = useStore((state) => state.updateFontMapping);
+  const setFontMapping = useStore((state) => state.setFontMapping);
 
   onmessage = async (event) => {
     if (event.data.pluginMessage.type == "allUserFontsData") {
@@ -18,7 +18,7 @@ const UI = () => {
       setAllUserFonts(event.data.pluginMessage.data);
     }
     if (event.data.pluginMessage.type === "fontMappingData") {
-      updateFontMapping(event.data.pluginMessage.data);
+      setFontMapping(event.data.pluginMessage.data);
     }
   };
 

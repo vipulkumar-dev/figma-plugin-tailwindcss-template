@@ -19,16 +19,16 @@ export function FontSelecter({ currentFont }: { currentFont?: string }) {
   const [open, setOpen] = React.useState(false);
   const [search, setSearch] = React.useState("");
 
-  const updateFontMapping = useStore((state) => state.updateFontMapping);
+  const setFontMapping = useStore((state) => state.setFontMapping);
   const fontMapping = useStore((state) => state.fontMapping);
 
   const allUserFonts = useContext(AllUserFonts);
 
   function handleSelect(targetFont) {
     if (targetFont === "Select none") {
-      updateFontMapping({ ...fontMapping, [currentFont]: null });
+      setFontMapping({ ...fontMapping, [currentFont]: null });
     } else {
-      updateFontMapping({ ...fontMapping, [currentFont]: targetFont });
+      setFontMapping({ ...fontMapping, [currentFont]: targetFont });
     }
 
     parent.postMessage(
