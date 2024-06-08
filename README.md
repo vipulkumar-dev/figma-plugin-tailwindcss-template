@@ -1,6 +1,6 @@
 # **Simple Font Replacer**
 
-Introducing the Simple Font Replacer, which can replace entire font families with just two clicks, so you can optimize your creative workflow. Embrace the automated process of changing individual text sizes, styles, or weights—our plugin takes care of it all!
+Introducing the Simple Font Replacer, which can replace entire font families with just three clicks, so you can optimize your creative workflow. Embrace the automated process of changing individual text sizes, styles, or weights—our plugin takes care of it all!
 
 Its like Magic
 With Simple Font Replacer, simply select a frame containing text elements or directly on individual text elements and choose a new font family from the plugin. It will automatically apply the new font to your text, preserving existing styles, and sizes.
